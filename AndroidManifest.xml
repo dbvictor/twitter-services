@@ -56,6 +56,13 @@
             android:name="com.dvictor.twitter.activities.ProfileActivity"
             android:label="@string/title_activity_profile" >
         </activity>
+    	<service
+   		 	android:name="com.dvictor.twitter.services.TwitterService"
+     		android:exported="false"/> <!-- nobody else can receive these, just our app.  Else make true -->
+    	<receiver
+	    	android:name="com.dvictor.twitter.receivers.TwitterUpdateAlarm"
+   			android:process=":remote" >
+		</receiver>
     </application>
 
 </manifest>

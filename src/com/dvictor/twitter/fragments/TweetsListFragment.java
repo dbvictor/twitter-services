@@ -5,8 +5,13 @@ import java.util.List;
 
 import org.json.JSONArray;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.util.Log;
@@ -18,10 +23,12 @@ import android.widget.Toast;
 
 import com.dvictor.twitter.R;
 import com.dvictor.twitter.TwitterApp;
+import com.dvictor.twitter.activities.TimelineActivity;
 import com.dvictor.twitter.adapters.TweetArrayAdapter;
 import com.dvictor.twitter.clients.TwitterClient;
 import com.dvictor.twitter.listeners.EndlessScrollListener;
 import com.dvictor.twitter.models.Tweet;
+import com.dvictor.twitter.services.TwitterService;
 import com.dvictor.twitter.util.InternetStatus;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -173,5 +180,36 @@ abstract public class TweetsListFragment extends Fragment {
 	
 	/** Query for the correct offline tweets for the particular fragment type. */
 	abstract protected List<Tweet> getOfflineTweets();
+	
+	/* BROADCAST RECEIVER */
+	// 1. Defining the broadcast receiver
+	private BroadcastReceiver myTestReceiver = new BroadcastReceiver(){
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			int newTweetsSize = intent.getIntExtra("size",-1);
+			Toast.makeText(getActivity(), ""+newTweetsSize+" New Tweets Ready", Toast.LENGTH_SHORT).show();
+		}
+	};
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		// Register for the particular broadcast based on ACTION string
+		// Define a filter that will listen to this action.
+		IntentFilter filter = new IntentFilter(TwitterService.ACTION);
+		// Tell the broadcast receiver to register our receiver for what it listens for.
+		// - Use local broadcast manager for faster actions specific to our app.
+		// - Use normal broadcast manager for slower but global to whole phone.  Actions/filters for these must be documented somewhere, like Google for phone stuff.  You can also view all registered actions on a phone.
+		LocalBroadcastManager.getInstance(getActivity()).registerReceiver(myTestReceiver, filter);
+		// or `registerReceiver(testReceiver, filter)` for a normal broadcast
+	}
+	
+	@Override
+	public void onPause() {
+		// Unregister the listener when the application is paused
+		super.onPause();
+		LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(myTestReceiver);
+		// or `unregisterReceiver(testReceiver)` for a normal broadcast
+	}
 	
 }

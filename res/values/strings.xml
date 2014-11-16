@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Animated Twitter</string>
+    <string name="app_name">Twitter with Services</string>
     <string name="action_create">Create</string>
     <string name="action_internet_toggle">Internet On/Off</string>
     <string name="action_profile">Profile</string>

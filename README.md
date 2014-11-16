@@ -14,8 +14,7 @@
   <li> Create a local notification whenever new tweets have been found and downloaded
     <ul>
       <li> Only create notification when new data is found
-      <li> Don't create duplicate notifications, overwrite the same notification each time updating the count
-      <li> i.e "30 new tweets since you last opened Twitter"
+      <li> Don't create duplicate notifications, overwrite the same notification each time updating the count.  i.e "30 new tweets since you last opened Twitter"
     </ul>
   <li> Twitter app should then load current home timeline tweets from the database
   <li> <b>(Optional)</b> Download new mentions timeline data as well and store to database.
